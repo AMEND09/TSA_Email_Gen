@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>TSA Email Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fb;
+      margin: 0;
+      padding: 0;
+      color: #002856;
+    }
+    header {
+      background: #002856;
+      padding: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    header img {
+      height: 60px;
+    }
+    .container {
+      max-width: 850px;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #002856;
+      margin-bottom: 20px;
+    }
+    select, textarea, button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background: #e41b13;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #c0140f;
+    }
+    .email-preview {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 15px;
+      background: #f9f9f9;
+      font-family: Arial, sans-serif;
+      line-height: 1.5;
+    }
+    .email-preview[contenteditable="true"] {
+      outline: 2px dashed #e41b13;
+    }
+    .cta {
+      display: inline-block;
+      background: #002856;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      margin-top: 12px;
+    }
+    .cta:hover {
+      background: #001c40;
+    }
+    .buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div style="width:100%;background:#0b66d0;padding:10px 0;display:flex;justify-content:center;">
+      <div style="max-width:850px;width:100%;display:flex;align-items:center;gap:12px;padding:0 16px;">
+  <img src="https://amend09.github.io/TSA_Email_Gen/dMHS%20TSA%20Logo.svg" alt="duPont Manual TSA Logo" style="height:56px;display:block;" />
+        <div style="color:#ffffff;font-family:Arial, sans-serif;font-size:20px;font-weight:700;
+                    line-height:1;">duPont Manual TSA</div>
+      </div>
+    </div>
+  </header>
+  
+  <div class="container">
+    <h1>TSA Email Generator</h1>
+    
+    <label for="template">Choose Email Template:</label>
+    <select id="template">
+      <option value="sponsor">Sponsorship Email (Companies/Colleges)</option>
+      <option value="seminar">Seminar Invitation (Tech Leaders)</option>
+      <option value="custom">Custom Email (Blank)</option>
+    </select>
+    
+    <label for="custom">Insert Customization (aligned initiatives, name, etc.):</label>
+    <textarea id="custom" rows="4" placeholder="e.g., We noticed your college has a strong AI program..."></textarea>
+    
+  <label for="contactEmail">Contact Email for CTAs:</label>
+  <input id="contactEmail" type="email" placeholder="e.g., contact@school.edu" />
+    
+    <div class="buttons">
+      <button onclick="generateEmail()">Generate Email</button>
+      <button onclick="copyEmail()">Copy to Clipboard</button>
+    </div>
+    
+    <div class="email-preview" id="preview" contenteditable="true">
+      <!-- Email will be shown here -->
+    </div>
+  </div>
+
+  <script>
+    function generateEmail() {
+      const template = document.getElementById("template").value;
+      const custom = document.getElementById("custom").value;
+      let content = "";
+
+      const contact = document.getElementById('contactEmail').value || '';
+
+      function mailto(subject, body) {
+        if (!contact) return '#';
+        const qs = [];
+        if (subject) qs.push('subject=' + encodeURIComponent(subject));
+        if (body) qs.push('body=' + encodeURIComponent(body));
+        return `mailto:${encodeURIComponent(contact)}${qs.length ? ('?' + qs.join('&')) : ''}`;
+      }
+
+      if (template === "sponsor") {
+        content = `
+          <div style="width:100%;background:#0b66d0;padding:10px 0;display:flex;justify-content:center;">
+            <div style="max-width:850px;width:100%;display:flex;align-items:center;gap:12px;padding:0 16px;">
+              <img src="https://amend09.github.io/TSA_Email_Gen/dMHS%20TSA%20Logo.svg" alt="duPont Manual TSA Logo" style="height:48px;display:block;" />
+              <div style="color:#ffffff;font-family:Arial, sans-serif;font-size:18px;font-weight:700;line-height:1;">duPont Manual TSA</div>
+            </div>
+          </div>
+          <div style="background:#ffffff;padding:12px;border-radius:6px;margin-top:8px;">
+            <h2 style="color:#002856;margin-top:4px;">Support the Next Generation of STEM Leaders</h2>
+            <p>Dear [Sponsor Representative],</p>
+            <p>We are the <strong>TSA (Technology Student Association)</strong> at [Your School], a chapter of the nationally recognized TSA. Our club empowers <strong>120+ high school students</strong> to explore careers in engineering, computer science, robotics, and design through competitions, leadership, and innovation.</p>
+            <p>${custom}</p>
+            <p>Your sponsorship would directly support our students by funding resources, competition travel, and outreach events. In return, we would proudly recognize your organization as a key partner in shaping the future of STEM education.</p>
+            <p>We would love to discuss partnership opportunities with you further.</p>
+            <a class="cta" href="${mailto('Sponsorship Inquiry','I am interested in sponsoring your TSA chapter.')}" style="display:inline-block;background:#0b66d0;color:#ffffff;padding:10px 18px;border-radius:4px;text-decoration:none;font-weight:600;">Become a Sponsor</a>
+            <p>Thank you for your time and consideration,<br>[Your Name]<br>President, TSA @ [School]</p>
+          </div>
+        `;
+      } else if (template === "seminar") {
+        content = `
+          <div style="width:100%;background:#0b66d0;padding:10px 0;display:flex;justify-content:center;">
+            <div style="max-width:850px;width:100%;display:flex;align-items:center;gap:12px;padding:0 16px;">
+              <img src="https://amend09.github.io/TSA_Email_Gen/dMHS%20TSA%20Logo.svg" alt="duPont Manual TSA Logo" style="height:48px;display:block;" />
+              <div style="color:#ffffff;font-family:Arial, sans-serif;font-size:18px;font-weight:700;line-height:1;">duPont Manual TSA</div>
+            </div>
+          </div>
+          <div style="background:#ffffff;padding:12px;border-radius:6px;margin-top:8px;">
+            <h2 style="color:#002856;margin-top:4px;">Inspire Future STEM Innovators</h2>
+            <p>Dear [Tech Leader],</p>
+            <p>We are excited to invite you to speak at our <strong>TSA (Technology Student Association)</strong> chapter seminar series. With an engaged group of <strong>120+ STEM-focused high school students</strong>, our seminars aim to connect future innovators with today’s industry leaders.</p>
+            <p>${custom}</p>
+            <p>Your insights and experiences would greatly inspire our members as they pursue careers in technology, engineering, and entrepreneurship.</p>
+            <a class="cta" href="${mailto('Seminar Speaking Invitation','I would like to confirm availability to speak at your TSA seminar series.')}" style="display:inline-block;background:#0b66d0;color:#ffffff;padding:10px 18px;border-radius:4px;text-decoration:none;font-weight:600;">Confirm Availability</a>
+            <p>We would be honored to host you,<br>[Your Name]<br>President, TSA @ [School]</p>
+          </div>
+        `;
+      } else {
+        content = `
+          <div style="width:100%;background:#0b66d0;padding:10px 0;display:flex;justify-content:center;">
+            <div style="max-width:850px;width:100%;display:flex;align-items:center;gap:12px;padding:0 16px;">
+              <img src="https://amend09.github.io/TSA_Email_Gen/dMHS%20TSA%20Logo.svg" alt="duPont Manual TSA Logo" style="height:48px;display:block;" />
+              <div style="color:#ffffff;font-family:Arial, sans-serif;font-size:18px;font-weight:700;line-height:1;">duPont Manual TSA</div>
+            </div>
+          </div>
+          <div style="background:#ffffff;padding:12px;border-radius:6px;margin-top:8px;">
+            <h2 style="color:#002856;margin-top:4px;">[Custom Subject Line Here]</h2>
+            <p>Dear [Recipient],</p>
+            <p>${custom || "Write your custom email content here..."}</p>
+            <p>Best regards,<br>[Your Name]<br>President, TSA (Technology Student Association) @ [School]</p>
+            <p>If you'd like to contact us directly you can email: <a href="${contact ? 'mailto:'+encodeURIComponent(contact) : '#'}">${contact || '[enter contact email above]'}</a></p>
+          </div>
+        `;
+      }
+
+      const preview = document.getElementById("preview");
+      preview.innerHTML = content;
+    }
+
+    function copyEmail() {
+      const preview = document.getElementById("preview");
+      const range = document.createRange();
+      range.selectNode(preview);
+      const selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+
+      try {
+        document.execCommand("copy");
+        selection.removeAllRanges();
+        alert("Email copied to clipboard!");
+      } catch (err) {
+        alert("Failed to copy email. Please select and copy manually.");
+      }
+    }
+  </script>
+</body>
+</html>
