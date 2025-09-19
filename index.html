@@ -100,6 +100,7 @@
     <select id="template">
       <option value="sponsor">Sponsorship Email (Companies/Colleges)</option>
       <option value="seminar">Seminar Invitation (Tech Leaders)</option>
+      <option value="newsletter">Newsletter (Images & Text)</option>
       <option value="custom">Custom Email (Blank)</option>
     </select>
     
@@ -192,6 +193,53 @@
             <p>Your insights and experiences would greatly inspire our members as they pursue careers in technology, engineering, and entrepreneurship.</p>
             <a class="cta" href="${mailto('Seminar Speaking Invitation','I would like to confirm availability to speak at your TSA seminar series.')}" style="display:inline-block;background:#0b66d0;color:#ffffff;padding:10px 18px;border-radius:4px;text-decoration:none;font-weight:600;">Confirm Availability</a>
             <p>We would be honored to host you,<br>[Your Name]<br>President, TSA @ [School]</p>
+          </div>
+        `;
+      } else if (template === "newsletter") {
+        content = `
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#0b66d0;border-collapse:collapse;">
+            <tr>
+              <td align="center">
+                <table role="presentation" width="850" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:850px;border-collapse:collapse;">
+                  <tr>
+                    <td style="padding:10px 16px;vertical-align:middle;">
+                      <img src="https://amend09.github.io/TSA_Email_Gen/dMHS%20TSA%20Logo.png" alt="duPont Manual TSA Logo" width="56" style="display:block;border:0;outline:none;text-decoration:none;height:auto;" />
+                    </td>
+                    <td style="padding:10px 16px;vertical-align:middle;">
+                      <span style="color:#ffffff;font-family:Arial, sans-serif;font-size:18px;font-weight:700;">duPont Manual TSA</span>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <div style="background:#ffffff;padding:12px;border-radius:6px;margin-top:8px;font-family:Arial, sans-serif;color:#002856;">
+            <h2 style="color:#002856;margin-top:4px;">[Newsletter Title]</h2>
+            <div style="text-align:center;margin:12px 0;">
+              <img src="" alt="Paste hero image here" style="max-width:100%;height:auto;border:2px dashed #ced4da;display:block;margin:0 auto;" />
+              <p style="font-size:12px;color:#666;margin-top:6px;">Click or paste an image into this area</p>
+            </div>
+            <h3 style="color:#0b66d0;margin-bottom:6px;">Lead Story</h3>
+            <p>${custom || 'Write the lead paragraph of your newsletter here.'}</p>
+
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin-top:12px;">
+              <tr>
+                <td style="vertical-align:top;padding-right:8px;width:50%;">
+                  <img src="" alt="Paste image" style="max-width:100%;height:auto;border:1px dashed #ced4da;display:block;margin-bottom:8px;" />
+                  <p style="margin:0;color:#33475b;">Caption or blurb for image 1.</p>
+                </td>
+                <td style="vertical-align:top;padding-left:8px;width:50%;">
+                  <img src="" alt="Paste image" style="max-width:100%;height:auto;border:1px dashed #ced4da;display:block;margin-bottom:8px;" />
+                  <p style="margin:0;color:#33475b;">Caption or blurb for image 2.</p>
+                </td>
+              </tr>
+            </table>
+
+            <h3 style="color:#0b66d0;margin-top:14px;">More Updates</h3>
+            <p>Use additional paragraphs to list events, accomplishments, or announcements. You can paste images and text directly into the preview area.</p>
+
+            <a class="cta" href="${mailto('Newsletter Inquiry','I have a question about your newsletter.')}">Contact Us</a>
+            <p style="margin-top:12px;">Best regards,<br>[Your Name]<br>President, TSA (Technology Student Association) @ [School]</p>
           </div>
         `;
       } else {
